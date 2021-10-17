@@ -14,7 +14,7 @@ export class NextMintComponent implements OnInit {
 
   ngOnInit(): void {
     // Set the date we're counting down to
-    var countDownDate = new Date("2021-10-17T13:14:15").getTime();
+    var countDownDate = new Date("2021-10-19T13:14:15").getTime();
 
     // Update the count down every 1 second
     var intervalRef = setInterval(() => {

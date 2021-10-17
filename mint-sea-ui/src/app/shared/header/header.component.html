@@ -1,13 +1,42 @@
-<header class="nav-holder make-sticky">
-  <nav class="navbar navbar-light bg-white navbar-expand-lg py-0">
+<header>
+  <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand name" href="/">MintSea</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand ms-3" href="/">
+        <img src="favicon.ico" class="img-fluid pe-2" style="height:1.5rem">
+        <span>Mint-Sea</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse">
-        <span class="">{{counter}}</span>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <h2 class="navbar-nav mb-2 mb-sm-0 mx-auto">{{counter}}</h2>
+
+        <ul class="navbar-nav mb-2 mb-sm-0 text-end">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/">Help</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/" id="dropdown10" data-bs-toggle="dropdown"
+              aria-expanded="false">Contact Us</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown10">
+              <li><a class="dropdown-item" href="/README.md">Action</a></li>
+              <li><a class="dropdown-item" href="/">Another action</a></li>
+              <li><a class="dropdown-item" href="/">One more action</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown me-3">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown10" data-bs-toggle="dropdown"
+              aria-expanded="false">Sign in</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown10">
+              <li><a class="dropdown-item" href="/">Action</a></li>
+              <li><a class="dropdown-item" href="/">Another action</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>

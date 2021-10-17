@@ -13,19 +13,19 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const speed: number = 1536;
-    const updateCount = () => {
-      const target = parseInt("7529");
-      const count = this.counter;
-      const increment = Math.trunc(target / speed);
-      if (count < target) {
-        this.counter = count + increment;
-        setTimeout(updateCount, 1);
-      } else {
-        this.counter = target;
-      }
-    };
-    updateCount();
+    this.updateCount(this.counter, 10001);
   }
+
+  updateCount(startValue: number, target: number) {
+    const count = startValue;
+    // steps of the counter
+    const incrementOrder = target < 100 ? 1 : 10;
+    if (count < target) {
+      this.counter = count + incrementOrder;
+      setTimeout(this.updateCount.bind(this), 0, this.counter, target);
+    } else {
+      this.counter = target;
+    }
+  };
 
 }
