@@ -32,7 +32,7 @@ export class NextMintComponent implements OnInit {
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       // Output the result in an element with id="demo"
-      this.timeForNextMint = days + " days " + hours + " hours " + minutes + " mminutes " + seconds + " seconds";
+      this.timeForNextMint = days + " day(s) " + hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s)";
 
       // If the count down is over, write some text
       if (distance < 0) {
