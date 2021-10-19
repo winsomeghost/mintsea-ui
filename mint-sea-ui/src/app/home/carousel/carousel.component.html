@@ -1,4 +1,4 @@
-<div id="projectcarousel" class="carousel slide" data-bs-ride="carousel">
+<!-- <div id="projectcarousel" class="carousel slide" data-bs-ride="carousel">
   <ol class="carousel-indicators">
     <li data-bs-target="#projectcarousel" data-bs-slide-to="0" class="active"></li>
     <li data-bs-target="#projectcarousel" data-bs-slide-to="1"></li>
@@ -30,5 +30,24 @@
         <p>Some representative placeholder content for the thord slide.</p>
       </div>
     </div>
+  </div>
+</div> -->
+
+
+<div id="projectcarousel" class="content-section implementation carousel-demo">
+  <div class="card">
+    <p-carousel [value]="images" [showNavigators]="false" [showIndicators]="false" styleClass="custom-carousel"
+      [numVisible]="4" [numScroll]="1" [circular]="true" [autoplayInterval]="4000" verticalViewPortHeight="30rem"
+      [responsiveOptions]="responsiveOptions">
+      <ng-template let-image pTemplate="item">
+        <div class="item card mx-2 ">
+          <img src="{{image.picture}}" class="card-img-top card-height" alt="...">
+          <div class="carousel-caption caption w-100">
+            <h3>{{image.random}}</h3>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
   </div>
 </div>
