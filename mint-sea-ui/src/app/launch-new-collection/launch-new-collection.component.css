@@ -1,3 +1,26 @@
 textarea {
   resize: none;
 }
+.hide{
+  display: none;
+  position: relative;
+  opacity: 0;
+}
+.show{
+  display: block;
+}
+.nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+.nav>li>button {
+  position: relative;
+  display: block;
+  margin : 10px 15px;
+  text-decoration: none;
+}
+.nav-pills>li.active>button{
+  color: #fff;
+  background-color: #198753;
+}

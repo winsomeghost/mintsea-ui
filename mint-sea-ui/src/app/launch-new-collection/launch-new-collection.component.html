@@ -119,6 +119,88 @@
         <textarea class="form-control my-4" rows="3" placeholder="Team details"></textarea>
       </div>
     </div>
+
+    <div class="progress position-relative mb-4" style="height: 1.5rem;">
+      <div class="progress-bar bg-success" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5"
+        [style.width.%]="widthValue">
+      </div>
+      <pre class="justify-content-center d-flex position-absolute w-100"
+        style="line-height: 1.5rem; font-size: .875rem;">progress {{widthValue}} %</pre>
+    </div>
+    <div class="contaner">
+      <ul class="nav nav-pills" role="tablist">
+        <li class="active">
+          <button type="button" data-toggle="tab" (click)="selectTab($event.target)" role="tab" data-step="1"
+            aria-expanded="true" class="btn btn-light">Step 1</button>
+        </li>
+        <li [class]="classType2">
+          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="2"
+            aria-expanded="false" class="btn btn-light">Step 2</button>
+        </li>
+        <li [class]="classType3">
+          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="3"
+            aria-expanded="false" class="btn btn-light">Step 3</button>
+        </li>
+        <li [class]="classType4">
+          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="4"
+            aria-expanded="false" class="btn btn-light">Step 4</button>
+        </li>
+        <li [class]="classType5">
+          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="5"
+            aria-expanded="false" class="btn btn-light">Step 5</button>
+        </li>
+      </ul>
+    </div>
+    <fieldset [class]="showStep1">
+      <div class="my-4">
+        <input type="text" class="form-control" placeholder="Title for step-1*" required name="collectionName" />
+        <div class="invalid-feedback">
+          Please choose a progress title.
+        </div>
+      </div>
+      <textarea class="form-control" rows="5" placeholder="description" name="description"
+        [(ngModel)]="formModel.description"></textarea>
+    </fieldset>
+    <fieldset [class]="showStep2">
+      <div class="my-4">
+        <input type="text" class="form-control" placeholder="Title for step-2*" required name="collectionName" />
+        <div class="invalid-feedback">
+          Please choose a progress title.
+        </div>
+      </div>
+      <textarea class="form-control" rows="5" placeholder="description" name="description"
+        [(ngModel)]="formModel.description"></textarea>
+    </fieldset>
+    <fieldset [class]="showStep3">
+      <div class="my-4">
+        <input type="text" class="form-control" placeholder="Title for step-3*" required name="collectionName" />
+        <div class="invalid-feedback">
+          Please choose a progress title.
+        </div>
+      </div>
+      <textarea class="form-control" rows="5" placeholder="description" name="description"
+        [(ngModel)]="formModel.description"></textarea>
+    </fieldset>
+    <fieldset [class]="showStep4">
+      <div class="my-4">
+        <input type="text" class="form-control" placeholder="Title for step-4*" required name="collectionName" />
+        <div class="invalid-feedback">
+          Please choose a progress title.
+        </div>
+      </div>
+      <textarea class="form-control" rows="5" placeholder="description" name="description"
+        [(ngModel)]="formModel.description"></textarea>
+    </fieldset>
+    <fieldset [class]="showStep5">
+      <div class="my-4">
+        <input type="text" class="form-control" placeholder="Title for step-5*" required name="collectionName" />
+        <div class="invalid-feedback">
+          Please choose a progress title.
+        </div>
+      </div>
+      <textarea class="form-control" rows="5" placeholder="description" name="description"
+        [(ngModel)]="formModel.description"></textarea>
+    </fieldset>
     <div class="row  justify-content-sm-end my-3 mx-2">
       <button type="button" class="btn btn-primary col-sm-3" (click)="onSubmit()">Submit</button>
     </div>
