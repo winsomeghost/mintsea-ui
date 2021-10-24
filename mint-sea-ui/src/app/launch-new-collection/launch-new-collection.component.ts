@@ -18,29 +18,30 @@ export class LaunchNewCollectionComponent implements OnInit {
     description: "",
     noOfItemsInCollection: "",
     type: {
+      noOfItemsInCollection: "",
+      csvContract: "",
       reserve: {
         selected: true
       },
       pre_sale: {
         selected: false,
-        attributes: {
-          listedWallets: [],
-          maxItemsPerWallet: 10,
-          startDateTime: "",
-          endDateTime: ""
-        }
+        listedWallets: [],
+        maxItemsPerWallet: 10,
+        startDateTime: this.currentTime,
+        endDateTime: this.currentTime
       },
       raffle: {
         selected: false,
-        raffleDateTime: ""
+        raffleDateTime: this.currentTime
       },
       public: {
         selected: true
       }
     },
-    twitterUrl: "",
-    discordUrl: "",
-    team: ""
+    twitterUrl: "https://twitter.com/",
+    discordUrl: "https://discord.com/",
+    team: "",
+    progressSteps: {}
   }
 
   constructor() { }
@@ -48,17 +49,18 @@ export class LaunchNewCollectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectionChange(oEvent: any): void {
-    if (typeof oEvent === "string") {
-      this.showRaffelTime = oEvent === "raffle";
-    } else {
-      this.showForPublicPreSale = oEvent.value === "ps" && oEvent.checked;
+  selectionChange(selction: any): void {
+    if (typeof selction === "string") {
+      this.showRaffelTime = selction === "raffle";
+    } else if (selction.value === "ps") {
+      this.showForPublicPreSale = selction.checked;
     }
   }
 
   onSubmit() {
+    // show error message in UI
     this.validateForm = "was-validated";
-    console.log();
+    console.log(this.formModel);
   }
 
 }

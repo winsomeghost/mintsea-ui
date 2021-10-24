@@ -1,28 +1,29 @@
 <div class="container">
-  <form [class]="validateForm" novalidate>
+  <form [class]="validateForm">
     <div class="row">
       <div class="mt-3 block-dashboard__title">
         <h1>Launch new collection</h1>
       </div>
       <div class="col-sm-6">
         <div class="my-4">
-          <input type="text" class="form-control" placeholder="Collection name *" [value]="formModel.collectionName"
-            required />
+          <input type="text" class="form-control" placeholder="Collection name *" [(ngModel)]="formModel.collectionName"
+            required name="collectionName" />
           <div class="invalid-feedback">
             Please choose a collection name.
           </div>
         </div>
         <div class="my-4">
-          <input type="text" class="form-control" [value]="formModel.collectionImageUrl"
+          <input type="text" class="form-control" [(ngModel)]="formModel.collectionImageUrl" name="collectionImageUrl"
             placeholder="Collection image url (or) Contract address *" required />
           <div class="invalid-feedback">
             Please choose an image url.
           </div>
         </div>
-        <textarea class="form-control" rows="3" placeholder="description" [value]="formModel.description"></textarea>
+        <textarea class="form-control" rows="3" placeholder="description" name="description"
+          [(ngModel)]="formModel.description"></textarea>
         <div class="my-4">
           <input type="number" class="form-control" placeholder="Number of items in collection *" min=1
-            [value]="formModel.noOfItemsInCollection" required />
+            [(ngModel)]="formModel.noOfItemsInCollection" required name="noOfItemsInCollection" />
           <div class="invalid-feedback">
             Please choose a valid number
           </div>
@@ -34,13 +35,13 @@
       <h3 class="block-dashboard__title col-sm-12 mt-2">Type of Sale</h3>
       <div class="form-group col-sm-4 my-2">
         <div class="form-group form-check my-2">
-          <input type="checkbox" class="form-check-input" id="reserve" (input)="selectionChange($event.target)"
-            value="res" Checked>
+          <input id="reserveCheckBox" type="checkbox" class="form-check-input" id="reserve"
+            (input)="selectionChange($event.target)" value="res" Checked>
           <label class="form-check-label" for="reserve">reserve</label>
         </div>
         <div class="form-group form-check my-2">
-          <input type="checkbox" class="form-check-input" id="pre-sale" (input)="selectionChange($event.target)"
-            value="ps">
+          <input id="preSaleCheckBox" type="checkbox" class="form-check-input" id="pre-sale"
+            (input)="selectionChange($event.target)" value="ps">
           <label class="form-check-label" for="pre-sale">pre-sale</label>
         </div>
         <div class="form-check my-2">
@@ -60,51 +61,61 @@
       </div>
       <div class="col-sm-8">
         <div class=" my-4">
-          <input type="number" class="form-control" placeholder="* number of Items" min=1 />
+          <input type="number" name="noOFItems" class="form-control" placeholder="* number of Items" min=1 />
           <div class="invalid-feedback">
             Please choose a valid number
           </div>
         </div>
         <div class="form-floating my-4">
-          <input type="file" id="uploadTemplate" class="form-control" placeholder="" required />
+          <input type="file" name="uploadTemplate" id="uploadTemplate" class="form-control" placeholder="" required />
           <label class="px-1 py-2" for="uploadTemplate">* upload contracts with csv template</label>
           <div class="invalid-feedback">
             Please upload a valid csv file.
           </div>
         </div>
         <div class="my-4">
-          <select *ngIf="showForPublicPreSale" class="form-select" required aria-label="white listed wallets">
-            <option selected hidden>* white listed wallets</option>
+          <select *ngIf="showForPublicPreSale" name="whiteLiestedWallets" class="form-select" required
+            aria-label="white listed wallets">
+            <option selected hidden value="">* white listed wallets</option>
             <option value="1">Metamask</option>
             <option value="2">one more</option>
           </select>
           <div class="invalid-feedback">
-            Please upload a valid csv file.
+            Please select a wallet to continue.
           </div>
         </div>
-        <input type="number" *ngIf="showForPublicPreSale" class="form-control my-4"
+        <input type="number" *ngIf="showForPublicPreSale" class="form-control my-4" name="maxItemsPerWallet"
           placeholder="* max number of items per wallet" max=1000 />
         <div class="form-floating my-4" *ngIf="showForPublicPreSale">
-          <input type="datetime-local" id="start-time" class="form-control" name="start-time" [value]="currentTime"
-            [min]="currentTime" />
+          <input type="datetime-local" id="start-time" class="form-control" name="start-time"
+            [(ngModel)]="formModel.type.pre_sale.startDateTime" [min]="currentTime" />
           <label class="px-1 py-2" for="start-time">* start date and time</label>
         </div>
         <div class="form-floating my-4" *ngIf="showForPublicPreSale">
-          <input type="datetime-local" id="end-time" class="form-control" name="end-time" [value]="currentTime"
-            [min]="currentTime" />
+          <input type="datetime-local" id="end-time" class="form-control" name="end-time"
+            [(ngModel)]="formModel.type.pre_sale.endDateTime" [min]="currentTime" />
           <label class="px-1 py-2" for="end-time">* end date and time</label>
         </div>
         <div class="form-floating my-4" *ngIf="showRaffelTime">
-          <input type="datetime-local" id="raffle-time" class="form-control" name="raffle-time" [value]="currentTime"
-            [min]="currentTime" />
+          <input type="datetime-local" id="raffle-time" class="form-control" name="raffle-time"
+            [(ngModel)]="formModel.type.raffle.raffleDateTime" [min]="currentTime" />
           <label class="px-1 py-2" for="raffle-time">* raffle date and time</label>
+          <div class="invalid-feedback">
+            Please specify a valid date and time.
+          </div>
         </div>
       </div>
 
 
       <div class=" col-sm-12 my-3">
-        <input type="text" class="form-control my-4" placeholder="Twitter Url" />
-        <input type="text" class="form-control my-4" placeholder="Discord url" />
+        <div class="form-floating my-4">
+          <input type="text" class="form-control" [(ngModel)]="formModel.twitterUrl" name="twitterUrl" />
+          <label class="px-1 py-2" for="raffle-time">Twitter Url</label>
+        </div>
+        <div class="form-floating my-4">
+          <input type="text" class="form-control" [(ngModel)]="formModel.discordUrl" name="discordUrl" />
+          <label class="px-1 py-2" for="raffle-time">Discord url</label>
+        </div>
         <textarea class="form-control my-4" rows="3" placeholder="Team details"></textarea>
       </div>
     </div>
