@@ -1,0 +1,14 @@
+{
+    "name": "mint-sea-service",
+    "version": "1.0.0",
+    "description": "Plane UI service with API forwarding capabilities",
+    "main": "index.js",
+    "scripts": {
+        "test": "node test"
+    },
+    "author": "Anand Sagar",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}

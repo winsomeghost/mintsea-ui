@@ -35,7 +35,7 @@ export class CarouselComponent implements OnInit {
       { random: 'Tonga', desc: "some description 03", picture: 'https://picsum.photos/id/984/900/500' },
       { random: 'Cook Island', desc: "some description 04", picture: 'https://picsum.photos/id/944/900/500' },
       { random: 'Niue', desc: "some description 05", picture: 'https://picsum.photos/id/1011/900/500' },
-      { random: 'American Samoa', desc: "some description 06", picture: 'https://picsum.photos/id/984/900/500' }
+      { random: 'American Samoa', desc: "some description 06", picture: 'https://alethea.ai/media/character_images/Mad_Scientist.jpg' }
     ];
   }
 

@@ -9,6 +9,7 @@ import { NextMintComponent } from './shared/next-mint/next-mint.component';
 import { CarouselComponent } from './home/carousel/carousel.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { LaunchNewCollectionComponent } from './launch-new-collection/launch-new-collection.component';
 import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CarouselModule } from 'primeng/carousel';
     CarouselComponent,
     HomeComponent,
     FooterComponent,
+    LaunchNewCollectionComponent
   ],
   imports: [
     BrowserModule,
