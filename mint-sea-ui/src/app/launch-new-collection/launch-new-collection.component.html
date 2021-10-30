@@ -202,7 +202,8 @@
         [(ngModel)]="formModel.description"></textarea>
     </fieldset>
     <div class="row  justify-content-sm-end my-3 mx-2">
-      <button type="button" class="btn btn-primary col-sm-3" (click)="onSubmit()">Submit</button>
+      <button type="button" [disabled]="!isMetaMaskEnabled" class="btn btn-primary col-sm-3"
+        (click)="onSubmit()">Submit</button>
     </div>
   </form>
 </div>

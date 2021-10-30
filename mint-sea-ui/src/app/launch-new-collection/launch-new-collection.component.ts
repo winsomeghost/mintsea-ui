@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ethers } from "ethers";
 
 @Component({
   selector: 'mint-sea-launch-new-collection',
@@ -14,6 +15,8 @@ export class LaunchNewCollectionComponent implements OnInit {
   showStep1: string = "show"; showStep2: string = "hide"; showStep3: string = "hide"; showStep4: string = "hide"; showStep5: string = "hide";
   classType2: any; classType3: any; classType4: any; classType5: any;
   widthValue: string = "20";
+  isMetaMaskEnabled: Boolean = false;
+  readonly ethereum: any;
 
   formModel: any = {
     collectionName: "",
@@ -47,9 +50,18 @@ export class LaunchNewCollectionComponent implements OnInit {
     progressSteps: {}
   }
 
-  constructor() { }
+  constructor() {
+    const { ethereum }: any = window;
+    this.ethereum = ethereum;
+  }
 
   ngOnInit(): void {
+    this.isMetaMaskEnabled = this.isMetaMaskInstalled();
+    this.ethereum.on('accountsChanged', this.updateCurrentAccount.bind(this));
+    this.ethereum.on('disconnect', () => this.CURRENT_ETH_ADDRESS = "");
+    this.ethereum.on('chainChanged', (chainId: any) => {
+      window.location.reload();
+    });
   }
 
   selectionChange(selction: any): void {
@@ -63,7 +75,7 @@ export class LaunchNewCollectionComponent implements OnInit {
   onSubmit() {
     // show error message in UI
     this.validateForm = "was-validated";
-    console.log(this.formModel);
+    this.connectEtheriumWallet();
   }
 
   selectTab(oEvent: any) {
@@ -102,4 +114,99 @@ export class LaunchNewCollectionComponent implements OnInit {
     }
   }
 
+
+
+  connectEtheriumWallet() {
+    if (this.isMetaMaskEnabled && !this.ethereum.isConnected()) {
+      this.ethereum.request({
+        method: 'wallet_requestPermissions',
+        params: [{ eth_accounts: {} }],
+      }).then((permissions: any[]) => {
+        if (permissions.find((permission) => permission.parentCapability === 'eth_accounts')) {
+          console.log('eth_accounts permission successfully requested!');
+          this.requestAccountList();
+        } else {
+          alert("Please grant permission for at least one account.")
+        }
+      }).catch((ex: any) => {
+        console.log('Permissions needed to continue.', ex.message);
+        alert("Permissions needed to continue.")
+      });
+    } else {
+      this.requestAccountList();
+    }
+  }
+
+  CURRENT_ETH_ADDRESS: string = "";
+  requestAccountList() {
+    this.ethereum.request({ method: 'eth_accounts' }).then(this.updateCurrentAccount.bind(this));
+  }
+
+  updateCurrentAccount(accounts: any) {
+    console.log("connected account: ", accounts);
+    this.CURRENT_ETH_ADDRESS = accounts[0];
+    this.getBalance(accounts[0]);
+    this.getGasPrice();
+    this.sendMoney(accounts[0]);
+  }
+
+  isMetaMaskInstalled(): Boolean {
+    return Boolean(this.ethereum && this.ethereum.isMetaMask);
+  };
+
+  sendMoney(fromAddress: any) {
+    let params: any = [
+      {
+        from: fromAddress,
+        to: '0x18C25C87bD4A6cBdB49Ae8CF3CfAC61ffE364b14',
+        value: '0x29a2241af62c0000',
+        gasPrice: '0x09184e72a000',
+        gas: '0x2710',
+      },
+    ];
+
+    this.ethereum
+      .request({
+        method: 'eth_sendTransaction',
+        params,
+      })
+      .then((result: any) => {
+        console.log(result);
+        // The result varies by RPC method.
+        // For example, this method will return a transaction hash hexadecimal string on success.
+      })
+      .catch((error: any) => {
+        console.log(error)
+        // If the request fails, the Promise will reject with an error.
+      });
+  }
+
+  getBalance(address: string) {
+    this.ethereum
+      .request({
+        "method": "eth_getBalance",
+        "params": [
+          address
+        ]
+      }).then((balanceResponse: any) => {
+        console.log("banace response", balanceResponse);
+        console.log("Balance in ether", this.convertToEtherValue(balanceResponse));
+      }).catch((error: any) => { console.log("error", error) });
+
+  }
+
+  getGasPrice() {
+    this.ethereum
+      .request({
+        "method": "eth_gasPrice",
+        "params": []
+      }).then((gasPrice: any) => {
+        console.log("banace response", gasPrice);
+        console.log("Gas cost..", this.convertToEtherValue(gasPrice));
+      }).catch((error: any) => { console.log("error", error) });
+  }
+
+  convertToEtherValue(hexadecimalPrice: string) {
+    return ethers.utils.formatEther(hexadecimalPrice);
+  }
 }
