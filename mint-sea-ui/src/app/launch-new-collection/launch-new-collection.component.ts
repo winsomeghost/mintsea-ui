@@ -14,9 +14,17 @@ export class LaunchNewCollectionComponent implements OnInit {
   validateForm: string = "";
   showStep1: string = "show"; showStep2: string = "hide"; showStep3: string = "hide"; showStep4: string = "hide"; showStep5: string = "hide";
   classType2: any; classType3: any; classType4: any; classType5: any;
-  widthValue: string = "20";
   isMetaMaskEnabled: Boolean = false;
   readonly ethereum: any;
+
+
+  progressSteps: any[] = [{
+    title: "Roadmap-1",
+    name: "",
+    placeholder: "Title for step-1 *",
+    description: "",
+    weight: 10
+  }];
 
   formModel: any = {
     collectionName: "",
@@ -31,14 +39,15 @@ export class LaunchNewCollectionComponent implements OnInit {
       },
       pre_sale: {
         selected: false,
-        listedWallets: [],
+        listedWallets: "",
         maxItemsPerWallet: 10,
         startDateTime: this.currentTime,
         endDateTime: this.currentTime
       },
       raffle: {
         selected: false,
-        raffleDateTime: this.currentTime
+        raffleStartDateTime: this.currentTime,
+        raffleEndDateTime: this.currentTime
       },
       public: {
         selected: true
@@ -47,8 +56,10 @@ export class LaunchNewCollectionComponent implements OnInit {
     twitterUrl: "https://twitter.com/",
     discordUrl: "https://discord.com/",
     team: "",
-    progressSteps: {}
+    progressSteps: this.progressSteps
   }
+
+  widthValue: string = (this.formModel.progressSteps[0].weight * 10).toString();
 
   constructor() {
     const { ethereum }: any = window;
@@ -66,55 +77,68 @@ export class LaunchNewCollectionComponent implements OnInit {
 
   selectionChange(selction: any): void {
     if (typeof selction === "string") {
-      this.showRaffelTime = selction === "raffle";
+      this.formModel.type.raffle.selected = selction === "raffle";
+      this.showRaffelTime = this.formModel.type.raffle.selected;
+      this.formModel.type.public.selected = !this.formModel.type.raffle.selected;
     } else if (selction.value === "ps") {
       this.showForPublicPreSale = selction.checked;
+      this.formModel.type.pre_sale.selected = selction.checked;
+    }
+  }
+
+  onContractUpload(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.readFileContent(file, "csvContract")
+    }
+  }
+
+  readFileContent(file: File, attributeToUpdate: any) {
+    let fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = (event: any) => {
+      if (attributeToUpdate === "csvContract") {
+        this.formModel.type.csvContract = event.target.result;
+      } else {
+        this.formModel.type.pre_sale.listedWallets = event.target.result;
+      }
+    }
+  }
+
+  onWalletDetailsUpload(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.readFileContent(file, "listedWallets")
     }
   }
 
   onSubmit() {
     // show error message in UI
     this.validateForm = "was-validated";
-    this.connectEtheriumWallet();
+    console.log(this.formModel);
+    //this.connectEtheriumWallet();
   }
 
-  selectTab(oEvent: any) {
-    switch (oEvent.textContent) {
-      case "Step 1":
-        this.showStep1 = "show";
-        this.widthValue = "20";
-        this.showStep2 = this.showStep3 = this.showStep4 = this.showStep5 = "hide";
-        break;
-      case "Step 2":
-        this.showStep2 = "show";
-        this.classType2 = "active";
-        this.widthValue = "40";
-        this.showStep1 = this.showStep3 = this.showStep4 = this.showStep5 = "hide";
-        break;
-      case "Step 3":
-        this.showStep3 = "show";
-        this.classType3 = "active";
-        this.widthValue = "60";
-        this.showStep2 = this.showStep1 = this.showStep4 = this.showStep5 = "hide";
-        break;
-      case "Step 4":
-        this.showStep4 = "show";
-        this.classType4 = "active";
-        this.widthValue = "80";
-        this.showStep2 = this.showStep3 = this.showStep1 = this.showStep5 = "hide";
-        break;
-      case "Step 5":
-        this.showStep5 = "show";
-        this.classType5 = "active";
-        this.widthValue = "100";
-        this.showStep2 = this.showStep3 = this.showStep4 = this.showStep1 = "hide";
-        break;
-      default:
-        break;
+  addNewStep(oEvent: any) {
+    const newStepPlace = this.progressSteps.length + 1;
+    let newStep = {
+      title: "Roadmap-" + newStepPlace,
+      name: "",
+      placeholder: "Title for step-" + newStepPlace + " *",
+      description: "",
+      weight: 4
     }
+    this.progressSteps.push(newStep)
+    let totalWeight = 0;
+    this.progressSteps.forEach((step: any) => { totalWeight = totalWeight + step.weight; });
+    this.widthValue = (totalWeight * 10).toString();
   }
 
-
+  stepWeightChange(oEvent: any) {
+    let totalWeight = 0;
+    this.progressSteps.forEach((step: any) => { totalWeight = totalWeight + step.weight; });
+    this.widthValue = (totalWeight * 10).toString();
+  }
 
   connectEtheriumWallet() {
     if (this.isMetaMaskEnabled && !this.ethereum.isConnected()) {

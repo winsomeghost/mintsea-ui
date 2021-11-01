@@ -67,21 +67,19 @@
           </div>
         </div>
         <div class="form-floating my-4">
-          <input type="file" name="uploadTemplate" id="uploadTemplate" class="form-control" placeholder="" required />
+          <input type="file" accept=".csv" name="uploadTemplate" id="uploadTemplate" class="form-control" placeholder=""
+            required (change)="onContractUpload($event)" />
           <label class="px-1 py-2" for="uploadTemplate">* upload contracts with csv template</label>
           <div class="invalid-feedback">
             Please upload a valid csv file.
           </div>
         </div>
-        <div class="my-4">
-          <select *ngIf="showForPublicPreSale" name="whiteLiestedWallets" class="form-select" required
-            aria-label="white listed wallets">
-            <option selected hidden value="">* white listed wallets</option>
-            <option value="1">Metamask</option>
-            <option value="2">one more</option>
-          </select>
+        <div *ngIf="showForPublicPreSale" class="form-floating my-4">
+          <input type="file" accept=".csv" name="whiteLiestedWallets" id="whiteLiestedWallets" class="form-control"
+            placeholder="" required (change)="onWalletDetailsUpload($event)" />
+          <label class="px-1 py-2" for="whiteLiestedWallets">* upload white listed wallets as csv template</label>
           <div class="invalid-feedback">
-            Please select a wallet to continue.
+            Please upload a valid csv file with wallet detials.
           </div>
         </div>
         <input type="number" *ngIf="showForPublicPreSale" class="form-control my-4" name="maxItemsPerWallet"
@@ -98,8 +96,16 @@
         </div>
         <div class="form-floating my-4" *ngIf="showRaffelTime">
           <input type="datetime-local" id="raffle-time" class="form-control" name="raffle-time"
-            [(ngModel)]="formModel.type.raffle.raffleDateTime" [min]="currentTime" />
-          <label class="px-1 py-2" for="raffle-time">* raffle date and time</label>
+            [(ngModel)]="formModel.type.raffle.raffleStartDateTime" [min]="currentTime" />
+          <label class="px-1 py-2" for="raffle-time">* raffle start date and time</label>
+          <div class="invalid-feedback">
+            Please specify a valid date and time.
+          </div>
+        </div>
+        <div class="form-floating my-4" *ngIf="showRaffelTime">
+          <input type="datetime-local" id="raffle-time" class="form-control" name="raffle-time"
+            [(ngModel)]="formModel.type.raffle.raffleEndDateTime" [min]="currentTime" />
+          <label class="px-1 py-2" for="raffle-time">* raffle end date and time</label>
           <div class="invalid-feedback">
             Please specify a valid date and time.
           </div>
@@ -129,78 +135,32 @@
     </div>
     <div class="contaner">
       <ul class="nav nav-pills" role="tablist">
+        <li class="active" *ngFor="let step of progressSteps;">
+          <button type="button" data-toggle="tab" role="tab" data-step="1" aria-expanded="true"
+            class="btn btn-light">{{step.title}}</button>
+        </li>
         <li class="active">
-          <button type="button" data-toggle="tab" (click)="selectTab($event.target)" role="tab" data-step="1"
-            aria-expanded="true" class="btn btn-light">Step 1</button>
-        </li>
-        <li [class]="classType2">
-          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="2"
-            aria-expanded="false" class="btn btn-light">Step 2</button>
-        </li>
-        <li [class]="classType3">
-          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="3"
-            aria-expanded="false" class="btn btn-light">Step 3</button>
-        </li>
-        <li [class]="classType4">
-          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="4"
-            aria-expanded="false" class="btn btn-light">Step 4</button>
-        </li>
-        <li [class]="classType5">
-          <button type="button" (click)="selectTab($event.target)" data-toggle="tab" role="tab" data-step="5"
-            aria-expanded="false" class="btn btn-light">Step 5</button>
+          <button type="button" data-toggle="tab" (click)="addNewStep($event.target)" role="tab" data-step="1"
+            aria-expanded="true" class="btn btn-light"> + </button>
         </li>
       </ul>
+      <fieldset *ngFor="let step of progressSteps;">
+        <div class="my-4">
+          <input type="text" class="form-control" [placeholder]="step.placeholder" required name="collectionName" />
+          <div class="invalid-feedback">
+            {{step.name}}
+          </div>
+        </div>
+        <div class="form-floating my-4">
+          <input type="number" class="form-control" [(ngModel)]="step.weight" required name="stepWeight"
+            (change)="stepWeightChange($event.target)" />
+          <label class="px-1 py-2" for="raffle-time">Step weight*</label>
+        </div>
+        <textarea class="form-control" rows="5" placeholder="description" name="description"
+          [(ngModel)]="formModel.description">{{step.description}}</textarea>
+      </fieldset>
     </div>
-    <fieldset [class]="showStep1">
-      <div class="my-4">
-        <input type="text" class="form-control" placeholder="Title for step-1*" required name="collectionName" />
-        <div class="invalid-feedback">
-          Please choose a progress title.
-        </div>
-      </div>
-      <textarea class="form-control" rows="5" placeholder="description" name="description"
-        [(ngModel)]="formModel.description"></textarea>
-    </fieldset>
-    <fieldset [class]="showStep2">
-      <div class="my-4">
-        <input type="text" class="form-control" placeholder="Title for step-2*" required name="collectionName" />
-        <div class="invalid-feedback">
-          Please choose a progress title.
-        </div>
-      </div>
-      <textarea class="form-control" rows="5" placeholder="description" name="description"
-        [(ngModel)]="formModel.description"></textarea>
-    </fieldset>
-    <fieldset [class]="showStep3">
-      <div class="my-4">
-        <input type="text" class="form-control" placeholder="Title for step-3*" required name="collectionName" />
-        <div class="invalid-feedback">
-          Please choose a progress title.
-        </div>
-      </div>
-      <textarea class="form-control" rows="5" placeholder="description" name="description"
-        [(ngModel)]="formModel.description"></textarea>
-    </fieldset>
-    <fieldset [class]="showStep4">
-      <div class="my-4">
-        <input type="text" class="form-control" placeholder="Title for step-4*" required name="collectionName" />
-        <div class="invalid-feedback">
-          Please choose a progress title.
-        </div>
-      </div>
-      <textarea class="form-control" rows="5" placeholder="description" name="description"
-        [(ngModel)]="formModel.description"></textarea>
-    </fieldset>
-    <fieldset [class]="showStep5">
-      <div class="my-4">
-        <input type="text" class="form-control" placeholder="Title for step-5*" required name="collectionName" />
-        <div class="invalid-feedback">
-          Please choose a progress title.
-        </div>
-      </div>
-      <textarea class="form-control" rows="5" placeholder="description" name="description"
-        [(ngModel)]="formModel.description"></textarea>
-    </fieldset>
+
     <div class="row  justify-content-sm-end my-3 mx-2">
       <button type="button" [disabled]="!isMetaMaskEnabled" class="btn btn-primary col-sm-3"
         (click)="onSubmit()">Submit</button>
